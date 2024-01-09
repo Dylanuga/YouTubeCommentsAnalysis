@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/estilo.css') }}">
+</head>
+<body>
+    <h1>Resultados del análisis</h1>
+    <!-- Itera sobre los resultados y muéstralos aquí -->
+    {% for resultado in resultados %}
+        <p>{{ resultado }}</p>
+    {% endfor %}
+</body>
+</html>
