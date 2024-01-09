@@ -9,7 +9,10 @@ api_key = api_key
 # Construir el objeto youtube usando la clave de API
 youtube = build("youtube", "v3", developerKey=api_key)
 
-def buscar_video(youtube, query):
+def buscar_video(youtube, videojuego):
+    # Añadir "Análisis" al principio de la consulta
+    query = f"Análisis {videojuego}"
+
     # Hacer una solicitud a la API de búsqueda de YouTube
     response = youtube.search().list(
         q=query,
@@ -61,22 +64,22 @@ def get_comments(youtube, video_id, comments=[], token=None):
     # Devolver la lista de comentarios
     return comments
 
-# Solicitar el título del videojuego al usuario
-videojuego = input("Por favor, introduce el título de un videojuego: ")
+# # Solicitar el título del videojuego al usuario
+# videojuego = input("Por favor, introduce el título de un videojuego: ")
 
-try:
-    # Buscar en YouTube "Análisis videojuego"
-    video_id = buscar_video(youtube, f"Análisis {videojuego}")
-    print("Video ID:", video_id)
+# try:
+#     # Buscar en YouTube "Análisis videojuego"
+#     video_id = buscar_video(youtube, f"Análisis {videojuego}")
+#     print("Video ID:", video_id)
 
-    # Llamar a la función con el ID del video
-    comments = get_comments(youtube, video_id)
+#     # Llamar a la función con el ID del video
+#     comments = get_comments(youtube, video_id)
 
-    # Convertir la lista de comentarios en un dataframe de pandas
-    df = pd.DataFrame(comments)
+#     # Convertir la lista de comentarios en un dataframe de pandas
+#     df = pd.DataFrame(comments)
 
-    df.to_csv('comentarios_mejorados.csv', sep=',', index=False)
+#     df.to_csv('comentarios_mejorados.csv', sep=',', index=False)
 
 
-except Exception as e:
-    print("Error:", str(e))
+# except Exception as e:
+#     print("Error:", str(e))
