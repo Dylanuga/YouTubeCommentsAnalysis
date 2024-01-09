@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilo.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("input[name='game']").on('keyup', function() {
+                var inputVal = $(this).val();
+                if (inputVal.length > 0) {
+                    setTimeout(function() {
+                        $.ajax({
+                            url: "https://api.rawg.io/api/games?key=" + "{{ rawg_key }}" + "&search=" + inputVal + "&language=es",
+                            method: "GET",
+                            success: function(data) {
+                                var availableGames = $.map(data.results, function(game) {
+                                    return game.name;
+                                });
+                                $("input[name='game']").autocomplete({
+                                    source: availableGames
+                                });
+                            }
+                        });
+                    }, 1000); // 1000 milisegundos de retraso, es decir, 1 segundo
+                }
+            });
+        });
+        </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Análisis de sentimiento de videojuegos</h1>
+        <form method="POST">
+        <input type="text" name="game" placeholder="Nombre del videojuego">
+        <input type="submit" value="Analizar">
+    </form>
+</body>
+</html>
