@@ -20,7 +20,7 @@ def index():
             video_id = buscar_video(youtube, game)
             comments = get_comments(youtube, video_id)
             df = pd.DataFrame(comments)
-            df.to_csv('data/comentarios_mejorados.csv', sep=',', index=False)
+            df.to_csv('comentarios_mejorados.csv', sep='|', index=False)
             return render_template('index.html', comments=comments, rawg_key=rawg_key)
     return render_template('index.html', rawg_key=rawg_key)
 
