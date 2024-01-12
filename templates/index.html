@@ -4,9 +4,12 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/estilo.css') }}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
         $(document).ready(function() {
+            var availableGames = [];
+    
             $("input[name='game']").on('keyup', function() {
                 var inputVal = $(this).val();
                 if (inputVal.length > 0) {
@@ -15,7 +18,7 @@
                             url: "https://api.rawg.io/api/games?key=" + "{{ rawg_key }}" + "&search=" + inputVal + "&language=es",
                             method: "GET",
                             success: function(data) {
-                                var availableGames = $.map(data.results, function(game) {
+                                availableGames = $.map(data.results, function(game) {
                                     return game.name;
                                 });
                                 $("input[name='game']").autocomplete({
@@ -26,8 +29,22 @@
                     }, 1000); // 1000 milisegundos de retraso, es decir, 1 segundo
                 }
             });
+    
+            // Añadir un evento de envío al formulario
+            $("form").on('submit', function(e) {
+                var userInput = $("input[name='game']").val();
+                if (!availableGames.includes(userInput)) {
+                    e.preventDefault(); // Evita que el formulario se envíe
+                    Swal.fire({ // Muestra un mensaje de error con SweetAlert2
+                        title: 'Error!',
+                        text: 'Videojuego incorrecto. Ten en cuenta que debes de introducir un videojuego con su titulo en el idioma original.',
+                        icon: 'error',
+                        confirmButtonText: 'Entendido'
+                    });
+                }
+            });
         });
-        </script>
+    </script>
 </head>
 <body>
     <div class="container">
